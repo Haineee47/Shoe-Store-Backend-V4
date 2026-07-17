@@ -26,4 +26,9 @@ logs/
 # Environment files
 .env
 .env.*
+**/.env
+**/.env.*
+
+# Keep environment templates
 !.env.example
+!**/.env.example

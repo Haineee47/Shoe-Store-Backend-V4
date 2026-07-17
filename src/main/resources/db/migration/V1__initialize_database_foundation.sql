@@ -1,0 +1,8 @@
+-- ============================================================================
+-- Database Foundation Initialization
+-- ============================================================================
+-- This migration establishes the initial Flyway migration baseline.
+--
+-- TASK-004 does not create business schemas, business tables, seed data,
+-- indexes, constraints, roles, or application-specific database objects.
+-- ============================================================================
