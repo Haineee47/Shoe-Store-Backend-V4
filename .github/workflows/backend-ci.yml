@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   verify:
-    name: Verify Backend
+    name: Verify and Package Backend
     runs-on: ubuntu-latest
 
     env:
@@ -58,3 +58,28 @@ jobs:
 
       - name: Build and verify backend
         run: mvn --batch-mode clean verify
+
+      - name: Verify executable JAR
+        shell: bash
+        run: |
+          JAR_PATH="target/shoe-store-backend-0.0.1-SNAPSHOT.jar"
+
+          test -f "$JAR_PATH"
+          test -s "$JAR_PATH"
+
+          jar tf "$JAR_PATH" > jar-contents.txt
+
+          grep -q '^META-INF/MANIFEST.MF$' jar-contents.txt
+          grep -q '^BOOT-INF/$' jar-contents.txt
+          grep -q '^BOOT-INF/classes/$' jar-contents.txt
+          grep -q '^BOOT-INF/lib/$' jar-contents.txt
+
+          echo "Executable JAR verified: $JAR_PATH"
+          ls -lh "$JAR_PATH"
+
+      - name: Upload Backend executable JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: shoe-store-backend-${{ github.sha }}
+          path: target/shoe-store-backend-0.0.1-SNAPSHOT.jar
+          if-no-files-found: error
